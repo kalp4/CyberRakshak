@@ -1,7 +1,5 @@
 # -----------------------------------------------------
-# NAME: Kalp Patel
-# CLASS: 11th A
-# School: SGVP International school
+# TEAM : SGVP International School
 # -----------------------------------------------------
 
 
@@ -480,7 +478,7 @@ toolkit_html = """
             </div>
 
             <div id="meter-panel" class="tab-panel hidden space-y-6">
-                <h2 class="text-2xl font-bold text-white">Strength Meter</h2>
+                <h2 class="text-2xl font-bold text-white">Password Strength meter</h2>
                 <div class="relative">
                     <input id="meter-in" type="password" class="w-full p-4 bg-gray-900 border border-gray-800 rounded-xl text-white focus:outline-none text-lg" placeholder="Type password...">
                 </div>
@@ -504,8 +502,8 @@ toolkit_html = """
             </div>
 
             <div id="pwned-panel" class="tab-panel hidden space-y-6">
-                <h2 class="text-2xl font-bold text-white">Hack Checker</h2>
-                <p class="text-sm text-gray-400">Has your password been leaked?</p>
+                <h2 class="text-2xl font-bold text-white">Breach Detector</h2>
+                <p class="text-sm text-gray-400">Has your password been leaked in a data breach?</p>
                 <div class="flex space-x-2">
                     <input id="pwned-in" type="password" class="flex-1 p-4 bg-gray-900 border border-gray-800 rounded-xl text-white focus:outline-none" placeholder="Enter password...">
                     <button onclick="checkPwned()" class="p-4 bg-orange-600 text-white rounded-xl font-bold active:scale-95 transition-transform">Check</button>
@@ -602,7 +600,7 @@ toolkit_html = """
         function loadQuiz() {
             const content = document.getElementById('quiz-content');
             if(qIdx >= questions.length) {
-                content.innerHTML = `<div class="text-center p-6 bg-gray-900 rounded-2xl border border-gray-800"><h3 class='text-purple-400 font-bold text-2xl'>Score: ${qScore}/${questions.length}</h3><button onclick="location.reload()" class="mt-4 text-sm text-gray-400 underline">Restart App</button></div>`;
+                content.innerHTML = `<div class="text-center p-6 bg-gray-900 rounded-2xl border border-gray-800"><h3 class='text-purple-400 font-bold text-2xl'>Score: ${qScore}/${questions.length}</h3><button onclick="location.reload()" class="mt-4 text-sm text-gray-400 underline">Restart Quiz</button></div>`;
                 document.getElementById('quiz-next').classList.add('hidden');
                 return;
             }
@@ -791,4 +789,5 @@ toolkit_html = """
 """
 
 if __name__ == '__main__':
+
     app.run(debug=True)
