@@ -1,5 +1,5 @@
 # -----------------------------------------------------
-# TEAM : SGVP International School
+# TEAM: SGVP International School
 # -----------------------------------------------------
 
 
@@ -9,7 +9,7 @@ import string
 import urllib.request
 import json
 import os
-import requests 
+import requests
 from flask import Flask, render_template_string, request, jsonify
 
 app = Flask(__name__)
@@ -22,37 +22,37 @@ def make_password(length=16, use_upper=True, use_numbers=True, use_symbols=True)
     upper_chars = string.ascii_uppercase
     digit_chars = string.digits
     symbol_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
-    
+
     all_chars = lower_chars
     final_password = []
 
     if use_upper:
         all_chars += upper_chars
         final_password.append(random.choice(upper_chars))
-    
+
     if use_numbers:
         all_chars += digit_chars
         final_password.append(random.choice(digit_chars))
-        
+
     if use_symbols:
         all_chars += symbol_chars
         final_password.append(random.choice(symbol_chars))
-    
+
     count_needed = length - len(final_password)
     for i in range(count_needed):
         final_password.append(random.choice(all_chars))
-    
+
     random.shuffle(final_password)
-    
+
     return "".join(final_password)
 
 def get_strength(password):
     score = 0
     if not password: return 0, "", "bg-gray-800", "0%"
-    
+
     if len(password) >= 8: score += 1
     if len(password) >= 12: score += 1
-    
+
     if any(c.isupper() for c in password): score += 1
     if any(c.islower() for c in password): score += 1
     if any(c.isdigit() for c in password): score += 1
@@ -68,15 +68,15 @@ def check_database(password):
     sha1_hash = hashlib.sha1(encoded_pw).hexdigest().upper()
     prefix = sha1_hash[:5]
     suffix = sha1_hash[5:]
-    
+
     url = f"https://api.pwnedpasswords.com/range/{prefix}"
     headers = {'User-Agent': 'SchoolProjectApp'}
-    
+
     try:
         req = urllib.request.Request(url, headers=headers)
         response = urllib.request.urlopen(req)
         data = response.read().decode('utf-8')
-        
+
         lines = data.splitlines()
         for line in lines:
             parts = line.split(':')
@@ -90,10 +90,10 @@ def detect_ai_image(image_bytes):
     if not SIGHTENGINE_API_USER or not SIGHTENGINE_API_SECRET:
         import time
         time.sleep(1.5)
-        
+
         mock_score = random.uniform(85, 99)
         mock_label = random.choice(["AI Generated", "Human / Real"])
-        
+
         return {
             "label": mock_label,
             "score": round(mock_score, 1),
@@ -111,17 +111,17 @@ def detect_ai_image(image_bytes):
     try:
         r = requests.post('https://api.sightengine.com/1.0/check.json', files=files, data=params)
         output = r.json()
-        
+
         if output.get('status') == 'success':
             ai_score = output['type']['ai_generated']
-            
+
             if ai_score > 0.5:
                 label = "AI Generated"
                 confidence = ai_score * 100
             else:
                 label = "Human / Real"
                 confidence = (1 - ai_score) * 100
-                
+
             return {
                 "label": label,
                 "score": round(confidence, 1),
@@ -129,7 +129,7 @@ def detect_ai_image(image_bytes):
             }
         else:
             return {"error": f"API Error: {output.get('error', {}).get('message', 'Unknown error')}"}
-            
+
     except Exception as e:
         return {"error": f"Connection Failed: {str(e)}"}
 
@@ -163,7 +163,7 @@ def risk_finance():
             <ul class="text-gray-300 text-sm space-y-2">
                 <li>✅ Never share your UPI PIN with anyone.</li>
                 <li>✅ Verify the VPA (UPI ID) before paying.</li>
-                <li>✅ If you lose money, call 1930 immediately.</li>
+                <li>✅if you lose money, call 1930 immediately.</li>
             </ul>
         </div>
     </div>
@@ -245,7 +245,7 @@ def pwned_route():
 def scan_image_route():
     if 'image' not in request.files:
         return jsonify({'error': 'No image uploaded'})
-    
+
     file = request.files['image']
     if file.filename == '':
         return jsonify({'error': 'No file selected'})
@@ -332,10 +332,33 @@ home_html = """
         <div class="h-6 w-full bg-gray-950 shrink-0"></div>
 
         <!-- Header -->
-        <div class="px-6 py-4 flex justify-between items-center shrink-0">
-            <div>
-                <h1 class="text-4xl font-bold text-white tracking-tight">CyberRakshak</h1>
+        <div class="px-6 py-4 flex items-center gap-4 shrink-0">
+            <!-- Custom Logo SVG recreating the uploaded style -->
+            <div class="w-12 h-12 flex items-center justify-center">
+                <svg width="100%" height="100%" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#06b6d4" /> <!-- Cyan/Blue -->
+                            <stop offset="100%" stop-color="#a855f7" /> <!-- Purple -->
+                        </linearGradient>
+                    </defs>
+                    <!-- Shield Outline -->
+                    <path d="M24 4L6 12V22C6 33 13.8 43.1 24 46C34.2 43.1 42 33 42 22V12L24 4Z" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    
+                    <!-- Inner Tech/Circuit Details -->
+                    <path d="M12 18L16 18" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                    <path d="M36 18L32 18" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                    <path d="M12 26L16 26" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                    <path d="M36 26L32 26" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                    
+                    <!-- Lock Icon Center -->
+                    <rect x="19" y="26" width="10" height="8" rx="2" fill="url(#logoGradient)"/>
+                    <path d="M21 26V23C21 21.3431 22.3431 20 24 20C25.6569 20 27 21.3431 27 23V26" stroke="url(#logoGradient)" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Keyhole -->
+                    <path d="M24 29V31" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
             </div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">CyberRakshak</h1>
         </div>
 
         <!-- Scrollable Content -->
@@ -478,7 +501,7 @@ toolkit_html = """
             </div>
 
             <div id="meter-panel" class="tab-panel hidden space-y-6">
-                <h2 class="text-2xl font-bold text-white">Password Strength meter</h2>
+                <h2 class="text-2xl font-bold text-white">Strength Meter</h2>
                 <div class="relative">
                     <input id="meter-in" type="password" class="w-full p-4 bg-gray-900 border border-gray-800 rounded-xl text-white focus:outline-none text-lg" placeholder="Type password...">
                 </div>
@@ -502,8 +525,8 @@ toolkit_html = """
             </div>
 
             <div id="pwned-panel" class="tab-panel hidden space-y-6">
-                <h2 class="text-2xl font-bold text-white">Breach Detector</h2>
-                <p class="text-sm text-gray-400">Has your password been leaked in a data breach?</p>
+                <h2 class="text-2xl font-bold text-white">Hack Checker</h2>
+                <p class="text-sm text-gray-400">Has your password been leaked?</p>
                 <div class="flex space-x-2">
                     <input id="pwned-in" type="password" class="flex-1 p-4 bg-gray-900 border border-gray-800 rounded-xl text-white focus:outline-none" placeholder="Enter password...">
                     <button onclick="checkPwned()" class="p-4 bg-orange-600 text-white rounded-xl font-bold active:scale-95 transition-transform">Check</button>
@@ -600,7 +623,7 @@ toolkit_html = """
         function loadQuiz() {
             const content = document.getElementById('quiz-content');
             if(qIdx >= questions.length) {
-                content.innerHTML = `<div class="text-center p-6 bg-gray-900 rounded-2xl border border-gray-800"><h3 class='text-purple-400 font-bold text-2xl'>Score: ${qScore}/${questions.length}</h3><button onclick="location.reload()" class="mt-4 text-sm text-gray-400 underline">Restart Quiz</button></div>`;
+                content.innerHTML = `<div class="text-center p-6 bg-gray-900 rounded-2xl border border-gray-800"><h3 class='text-purple-400 font-bold text-2xl'>Score: ${qScore}/${questions.length}</h3><button onclick="location.reload()" class="mt-4 text-sm text-gray-400 underline">Restart App</button></div>`;
                 document.getElementById('quiz-next').classList.add('hidden');
                 return;
             }
@@ -621,11 +644,26 @@ toolkit_html = """
             
             buttons.forEach(btn => btn.disabled = true);
             
-            buttons[q.c].classList.remove('bg-gray-900', 'active:bg-gray-800', 'border-gray-800');
-            buttons[q.c].classList.add('bg-green-600', 'border-green-600', 'text-white');
+            const setStatus = (id, valid) => {
+                const el = document.getElementById(id);
+                const dot = el.querySelector('span');
+                if(valid) {
+                    el.classList.remove('text-gray-500');
+                    el.classList.add('text-green-400');
+                    dot.classList.remove('bg-gray-700');
+                    dot.classList.add('bg-green-500');
+                } else {
+                    el.classList.add('text-gray-500');
+                    el.classList.remove('text-green-400');
+                    dot.classList.add('bg-gray-700');
+                    dot.classList.remove('bg-green-500');
+                }
+            };
 
             if (i === q.c) {
                 qScore++;
+                buttons[i].classList.remove('bg-gray-900', 'active:bg-gray-800', 'border-gray-800');
+                buttons[i].classList.add('bg-green-600', 'border-green-600', 'text-white');
                 
                 const feed = document.getElementById('quiz-feedback');
                 feed.classList.remove('hidden');
@@ -635,6 +673,10 @@ toolkit_html = """
                 buttons[i].classList.remove('bg-gray-900', 'active:bg-gray-800', 'border-gray-800');
                 buttons[i].classList.add('bg-red-600', 'border-red-600', 'text-white');
                 
+                // Highlight the correct answer as well
+                buttons[q.c].classList.remove('bg-gray-900', 'active:bg-gray-800', 'border-gray-800');
+                buttons[q.c].classList.add('bg-green-600', 'border-green-600', 'text-white');
+
                 const feed = document.getElementById('quiz-feedback');
                 feed.classList.remove('hidden');
                 feed.innerHTML = `<span class="text-red-400 font-bold">Wrong.</span> ${q.expl}`;
@@ -789,5 +831,4 @@ toolkit_html = """
 """
 
 if __name__ == '__main__':
-
     app.run(debug=True)
